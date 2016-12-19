@@ -1,6 +1,47 @@
 <html>
   <head>
     <title>SOUND Courier Contract Calculator</title>
+    <style>
+      #contract {
+        display: inline-block;
+        width: 400px;
+        padding: 0 10px;
+        background-color: #020202;
+        color: #9A9A9A;
+        font-family: sans-serif;
+        border: 1px solid #322C1C;
+      }
+      #contract > :first-child {
+        margin-top: 8px;
+      }
+      #contract h2 {
+        color: #C0C0C0;
+      }
+      #contract input[type=text] {
+        float: right;
+        width: 125px;
+        border-top: 1px solid #31281A;
+        border-left: 1px solid #31281A;
+        border-bottom: 1px solid #4D4230;
+        border-right: 1px solid #4D4230;
+        background-color: #2A2113;
+        color: #C0BEBA;
+      }
+      #contract input[type=button] {
+        float: right;
+        width: 80px;
+        margin-left: 3px;
+        border: 1px solid #654E1D;
+        background-color: #3F3013;
+        color: #BBAB8A;
+      }
+      #contract .placeholder {
+        float: right;
+        width: 80px;
+        height: 10px;
+        margin-left: 3px;
+      }
+    </style>
     <script type="text/javascript">
       function sendEvepraisal() {
         const evepraisal_url = document.querySelector('#evepraisal').value;
@@ -11,23 +52,56 @@
             minimumFractionDigits: 2,
             maximumFractionDigits: 2
           });
-          $('#value').textContent = formatter.format(result.value);
-          $('#volume').textContent = formatter.format(result.volume);
           $('#haulertype').textContent = result.hauler_type;
+          $('#volume').textContent = formatter.format(result.volume);
+          $('#value').textContent = formatter.format(result.value);
           $('#reward').textContent = formatter.format(result.reward);
         }).calculateReward(evepraisal_url);
       }
     </script>
   </head>
+
   <body>
-    <h1 class="header">SOUND Courier Contract Calculator</h1>
+    <h1 class="header">SA.FE Courier Contract Calculator</h1>
     <input type="text" id="evepraisal">
     <input type="submit" onclick="sendEvepraisal();">
     <hr>
-    <p>Value: <span id="value"></span></p>
-    <p>Volume: <span id="volume"></span></p>
-    <p>Fits in: <span id="haulertype"></span></p>
-    <p>Reward: <span id="reward"></span></p>
+    <p>Total volume is <span id="volume"></span> m3. Fits in a <span id="haulertype"></span>.</p>
+    <div id="contract">
+      <p>Create Contract</p>
+      <!-- TODO: add image -->
+      <h2>Select Options (3/4)</h2>
+      <p>
+        Ship To
+        <input type="button" value="Search">
+        <input type="text" readonly=1 value="<Your Citadel Here>">
+      </p>
+      <p>
+        Reward
+        <span class="placeholder"></span>
+        <input type="text" readonly=1 id="reward" onclick="this.select();">
+      </p>
+      <p>
+        Collateral
+        <input type="button" value="Base Price">
+        <input type="text" readonly=1 id="value" onclick="this.select();">
+      </p>
+      <p>
+        Expiration
+        <span class="placeholder"></span>
+        <input type="text" readonly=1 value="7 Days">
+      </p>
+      <p>
+        Days to complete
+        <span class="placeholder"></span>
+        <input type="text" readonly=1 value="3" onclick="this.select();">
+      </p>
+      <p>
+        Description (optional)
+        <span class="placeholder"></span>
+        <input type="text" readonly=1>
+      </p>
+    </div>
   </body>
 </html>
 
