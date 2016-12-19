@@ -2,7 +2,8 @@
  *  Main rendering function for GET request
  */
 function doGet() {
-  return HtmlService.createHtmlOutputFromFile('calc.html');
+  return HtmlService.createHtmlOutputFromFile('calc.html')
+    .addMetaTag('viewport', 'width=device-width, initial-scale=1');
 }
 
 var MAX_REWARD = 50 * 1e6;
