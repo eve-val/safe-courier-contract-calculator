@@ -1,0 +1,33 @@
+<html>
+  <head>
+    <title>SOUND Courier Contract Calculator</title>
+    <script type="text/javascript">
+      function sendEvepraisal() {
+        const evepraisal_url = document.querySelector('#evepraisal').value;
+        if (!evepraisal_url) return;
+        google.script.run.withSuccessHandler((result)=>{
+          const $ = document.querySelector.bind(document);
+          const formatter = Intl.NumberFormat('en-UK', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+          });
+          $('#value').textContent = formatter.format(result.value);
+          $('#volume').textContent = formatter.format(result.volume);
+          $('#haulertype').textContent = result.hauler_type;
+          $('#reward').textContent = formatter.format(result.reward);
+        }).calculateReward(evepraisal_url);
+      }
+    </script>
+  </head>
+  <body>
+    <h1 class="header">SOUND Courier Contract Calculator</h1>
+    <input type="text" id="evepraisal">
+    <input type="submit" onclick="sendEvepraisal();">
+    <hr>
+    <p>Value: <span id="value"></span></p>
+    <p>Volume: <span id="volume"></span></p>
+    <p>Fits in: <span id="haulertype"></span></p>
+    <p>Reward: <span id="reward"></span></p>
+  </body>
+</html>
+
