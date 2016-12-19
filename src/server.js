@@ -14,6 +14,13 @@ function calculateReward(evepraisal_url) {
   var evepraisal = JSON.parse(json);
 
   // Returns the cheapest, fastest hauler that the cargo fits in
+  //
+  // TODO(wfurr): This does not handle packaged ship volumes correctly.
+  // Evepraisal always reports unpackaged volume, and there's no way to
+  // differentiate.  Will have to investigate in-game inventory copypasta for
+  // determining packaged vs unpacked volume.  This may require a different
+  // input UI than evepraisal links.
+  //
   var fitsIn = function(value, volume) {
     var hauler_limits = [ // Ordered by value and volume from least to greatest
       { type: 'Interceptor', value: 100000000, volume: 100 },
