@@ -54,8 +54,8 @@
           });
           $('#haulertype').textContent = result.hauler_type;
           $('#volume').textContent = formatter.format(result.volume);
-          $('#value').textContent = formatter.format(result.value);
-          $('#reward').textContent = formatter.format(result.reward);
+          $('#value').value = formatter.format(result.value);
+          $('#reward').value = formatter.format(result.reward);
         }).calculateReward(evepraisal_url);
       }
     </script>
