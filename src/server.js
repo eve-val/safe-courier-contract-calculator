@@ -37,6 +37,8 @@ function calculateReward(evepraisal_url) {
     volume: evepraisal.totals.volume,
     hauler_type: fitsIn(evepraisal.totals.sell, evepraisal.totals.volume),
     reward: 20000000 // TODO calculate reward based on hauler type and fraction of max cargo
+    // reward formula: MAX_REWARD*max(Volume/60,000, collateral/500,000,000)
+    // e.g. MAX_REWARD 50M
   };
 }
 
