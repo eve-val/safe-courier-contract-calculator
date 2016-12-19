@@ -49,7 +49,7 @@
       function sendEvepraisal() {
         const evepraisal_url = document.querySelector('#evepraisal').value;
         if (!evepraisal_url) return;
-        google.script.run.withSuccessHandler((result)=>{
+        google.script.run.withSuccessHandler(function(result) {
           const $ = document.querySelector.bind(document);
           const formatter = Intl.NumberFormat('en-UK', {
             minimumFractionDigits: 2,
