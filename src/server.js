@@ -8,21 +8,19 @@ function doGet() {
 var MAX_REWARD = 50 * 1e6;
 
 /**
- *  Calculate the value, volume, reward, and type of hauler for a given
- *  inventory block represented by an evepraisal URL.
+ *  Calculate the reward and type of hauler needed for a given value of goods
+ *  to haul and volume.
+ *
+ * TODO: Consider evepraisal or inventory block result.
+ * Note, this has difficulty with packaged ship volumes.  Evepraisal always
+ * returns the unpacked ship volume, and has no way to differentiate between a
+ * packaged or unpackaged ship.  It's unclear how a copy and paste from the EVE
+ * inventory would deal with this.
  */
-function calculateReward(evepraisal_url) {
-  var json = UrlFetchApp.fetch(evepraisal_url + '.json');
-  var evepraisal = JSON.parse(json);
-
+function calculateReward(value, volume) {
+  value = parseInt(value.replace(/,/g, ''));
+  volume = parseFloat(volume.replace(/,/g, ''));
   // Returns the cheapest, fastest hauler that the cargo fits in
-  //
-  // TODO(wfurr): This does not handle packaged ship volumes correctly.
-  // Evepraisal always reports unpackaged volume, and there's no way to
-  // differentiate.  Will have to investigate in-game inventory copypasta for
-  // determining packaged vs unpacked volume.  This may require a different
-  // input UI than evepraisal links.
-  //
   var fitsIn = function(value, volume) {
     var hauler_limits = [ // Ordered by value and volume from least to greatest
       { type: 'Interceptor',          value:  100 * 1e6, volume: 100 },
@@ -33,7 +31,7 @@ function calculateReward(evepraisal_url) {
     ];
     for (var i = 0; i < hauler_limits.length; i++) {
       var hauler = hauler_limits[i];
-      if (value < hauler.value && volume < hauler.volume) {
+      if (value <= hauler.value && volume <= hauler.volume) {
         return hauler.type;
       }
     }
@@ -42,10 +40,9 @@ function calculateReward(evepraisal_url) {
 
   // TODO error handling
   return {
-    value: evepraisal.totals.sell,
-    volume: evepraisal.totals.volume,
-    hauler_type: fitsIn(evepraisal.totals.sell, evepraisal.totals.volume),
-    reward: MAX_REWARD * Math.max(evepraisal.totals.volume / 60000,
-                                  evepraisal.totals.sell / (500 * 1e6))
+    value: value,
+    hauler_type: fitsIn(value, volume),
+    reward: MAX_REWARD * Math.max(value / (500 * 1e6),
+                                  volume / 60000)
   };
 }

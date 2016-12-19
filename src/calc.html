@@ -2,13 +2,15 @@
   <head>
     <title>SOUND Courier Contract Calculator</title>
     <style>
+      body {
+        background-color: #020202;
+        color: #9A9A9A;
+        font-family: sans-serif;
+      }
       #contract {
         display: inline-block;
         width: 400px;
         padding: 0 10px;
-        background-color: #020202;
-        color: #9A9A9A;
-        font-family: sans-serif;
         border: 1px solid #322C1C;
         font-size: 0.85em;
       }
@@ -46,33 +48,34 @@
       }
     </style>
     <script type="text/javascript">
-      function sendEvepraisal() {
-        const evepraisal_url = document.querySelector('#evepraisal').value;
-        if (!evepraisal_url) return;
+    function getResults() {
+        const $ = document.querySelector.bind(document);
+        const value = $('#value').value;
+        const volume = $('#volume').value;
+        if (!value || !volume) return;
         google.script.run.withSuccessHandler(function(result) {
-          const $ = document.querySelector.bind(document);
           const formatter = Intl.NumberFormat('en-UK', {
             minimumFractionDigits: 2,
             maximumFractionDigits: 2
           });
           $('#haulertype').textContent = result.hauler_type;
-          $('#volume').textContent = formatter.format(result.volume);
-          $('#value').value = formatter.format(result.value);
+          $('#collateral').value = formatter.format(result.value);
           $('#reward').value = formatter.format(result.reward);
-        }).calculateReward(evepraisal_url);
+        }).calculateReward(value, volume);
       }
     </script>
   </head>
 
   <body>
     <h1 class="header">SA.FE Courier Contract Calculator</h1>
-    <input type="text" id="evepraisal">
-    <input type="submit" onclick="sendEvepraisal();">
+    <input type="text" id="value"  placeholder="Value (ISK)">
+    <input type="text" id="volume" placeholder="Volume (m3)">
+    <!-- TODO Add hint text for volume of packaged and unpackaced ships -->
+    <input type="submit" onclick="getResults();">
     <hr>
-    <p>Total volume is <span id="volume"></span> m3. Fits in a <span id="haulertype"></span>.</p>
+    <p>Fits in: <span id="haulertype"></span>.</p>
     <div id="contract">
       <p>Create Contract</p>
-      <!-- TODO: add image -->
       <h2>Select Options (3/4)</h2>
       <p>
         Ship To
@@ -87,7 +90,7 @@
       <p>
         Collateral
         <input type="button" value="Base Price">
-        <input type="text" readonly=1 id="value" onclick="this.select();">
+        <input type="text" readonly=1 id="collateral" onclick="this.select();">
       </p>
       <p>
         Expiration
