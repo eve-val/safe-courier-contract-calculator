@@ -3,7 +3,8 @@
  */
 function doGet() {
   return HtmlService.createHtmlOutputFromFile('calc.html')
-    .addMetaTag('viewport', 'width=device-width, initial-scale=1');
+    .addMetaTag('viewport', 'width=device-width, initial-scale=1')
+    .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
 }
 
 var MAX_REWARD = 50 * 1e6;
