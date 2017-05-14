@@ -9,7 +9,7 @@
       }
       #contract {
         display: inline-block;
-        width: 400px;  /* TODO add alternate formatting for <400px */
+        width: 300px;  /* TODO add alternate formatting for <400px */
         padding: 0 10px;
         border: 1px solid #322C1C;
         font-size: 0.85em;
@@ -31,20 +31,6 @@
         border-right: 1px solid #4D4230;
         background-color: #2A2113;
         color: #C0BEBA;
-      }
-      #contract input[type=button] {
-        float: right;
-        width: 80px;
-        margin-left: 3px;
-        border: 1px solid #654E1D;
-        background-color: #3F3013;
-        color: #BBAB8A;
-      }
-      #contract .placeholder {
-        float: right;
-        width: 80px;
-        height: 10px;
-        margin-left: 3px;
       }
     </style>
     <script type="text/javascript">
@@ -78,32 +64,26 @@
       <h2>Select Options (3/4)</h2>
       <p>
         Ship To
-        <input type="button" value="Search">
         <input type="text" readonly=1 value="J134407 - Statio Tranquillitatis">
       </p>
       <p>
         Reward
-        <span class="placeholder"></span>
         <input type="text" readonly=1 id="reward" onclick="this.select();">
       </p>
       <p>
         Collateral
-        <input type="button" value="Base Price">
         <input type="text" readonly=1 id="collateral" onclick="this.select();">
       </p>
       <p>
         Expiration
-        <span class="placeholder"></span>
         <input type="text" readonly=1 value="1 Week">
       </p>
       <p>
         Days to complete
-        <span class="placeholder"></span>
         <input type="text" readonly=1 value="3" onclick="this.select();">
       </p>
       <p>
         Description (optional)
-        <span class="placeholder"></span>
         <input type="text" readonly=1>
       </p>
     </div>
