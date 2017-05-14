@@ -7,7 +7,10 @@ function doGet() {
     .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
 }
 
-var MAX_REWARD = 50 * 1e6;
+var MIN_UNITS   =        2;
+var UNIT_COST   =  1000000;  //  1M ISK
+var VALUE_UNIT  = 20000000;  // 20M ISK
+var VOLUME_UNIT =     2000;  //  2K m^3
 
 /**
  *  Calculate the reward and type of hauler needed for a given value of goods
@@ -20,7 +23,7 @@ var MAX_REWARD = 50 * 1e6;
  * inventory would deal with this.
  */
 function calculateReward(value, volume) {
-  value = parseInt(value.replace(/,/g, ''));
+  value = parseFloat(value.replace(/,/g, ''));
   volume = parseFloat(volume.replace(/,/g, ''));
   // Returns the cheapest, fastest hauler that the cargo fits in
   var fitsIn = function(value, volume) {
@@ -40,11 +43,24 @@ function calculateReward(value, volume) {
     return "Doesn't even fit in an Orca!";
   };
 
+  // If someone pastes in units of millions of ISK, convert to units of ones of ISK.
+  // 20.25 -> 20,250,000
+  if (value < 100000) {
+    value = value * 1000000;
+  }
+  
+  value  = Math.round(value);
+  volume = Math.round(volume);
+  
+  var volume_units = Math.ceil(volume / VOLUME_UNIT);
+  var value_units  = Math.ceil(value  /  VALUE_UNIT);
+  var billed_units = Math.max(volume_units, value_units, MIN_UNITS);
+  var reward = billed_units * UNIT_COST;
+  
   // TODO error handling
   return {
     value: value,
     hauler_type: fitsIn(value, volume),
-    reward: MAX_REWARD * Math.max(value / (500 * 1e6),
-                                  volume / 60000)
+    reward: reward
   };
 }
