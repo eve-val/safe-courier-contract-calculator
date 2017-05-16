@@ -7,10 +7,10 @@ function doGet() {
     .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
 }
 
-var MIN_UNITS   =        2;
-var UNIT_COST   =  1000000;  //  1M ISK
-var VALUE_UNIT  = 20000000;  // 20M ISK
-var VOLUME_UNIT =     2000;  //  2K m^3
+var MIN_UNITS   =    2;
+var UNIT_COST   =  1e6;  //  1M ISK
+var VALUE_UNIT  = 20e6;  // 20M ISK
+var VOLUME_UNIT = 2000;  //  2K m^3
 
 /**
  *  Calculate the reward and type of hauler needed for a given value of goods
@@ -43,10 +43,10 @@ function calculateReward(value, volume) {
     return "Doesn't even fit in an Orca!";
   };
 
-  // If someone pastes in units of millions of ISK, convert to units of ones of ISK.
-  // 20.25 -> 20,250,000
-  if (value < 100000) {
-    value = value * 1000000;
+  // Assume values of < 1M ISK are in millions and convert to units.
+  // 20.25 (M ISK) -> 20,250,000 (ISK)
+  if (value < 1e6) {
+    value = value * 1e6;
   }
   
   value  = Math.round(value);
